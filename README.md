@@ -1,8 +1,4 @@
-## Ex. No. 01 - Image-Handling-and-Pixel-Transformations-Using-OpenCV 
-## Name : Naveen Kumar.R
-## Reg No : 212223230139
-## Date : 28/08/25
-
+# Image-Handling-and-Pixel-Transformations-Using-OpenCV 
 
 ## AIM:
 Write a Python program using OpenCV that performs the following tasks:
@@ -32,319 +28,212 @@ Modify the image contrast by creating two higher contrast images using scaling f
 Display the original, lower contrast, and higher contrast images.
 
 ### Step 5:
-Split the image (boy.jpg) into B, G, R components and display the channel
+Split the image (boy.jpg) into B, G, R components and display the channels
 
-## PROGRAM DEVELOPED BY:
-~~~
-NAME : Naveen Kumar.R
-REG NO: 212223230139
-~~~
+## Program Developed By:
+- **Name:** THARUN SRIDHAR
+- **Register Number:** 212223230230
 
+  ### Ex. No. 01
 
 #### 1. Read the image ('Eagle_in_Flight.jpg') using OpenCV imread() as a grayscale image.
-```
-import cv2
-import numpy as np
-import matplotlib.pyplot as plt
-img =cv2.imread('Eagle_in_Flight.jpg',cv2.IMREAD_COLOR)
-img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+```python
+img = cv2.imread('Eagle_in_Flight.jpg',0)
 ```
 
 #### 2. Print the image width, height & Channel.
-```
-img.shape
+```python
+print(img.shape)
 ```
 
 #### 3. Display the image using matplotlib imshow().
-```
-img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_RGB2GRAY)
-plt.imshow(img_gray,cmap='grey')
+```python
+plt.imshow(img[:,::-1],cmap='gray')
 plt.show()
 ```
 
 #### 4. Save the image as a PNG file using OpenCV imwrite().
-```
-img=cv2.imread('Eagle_in_Flight.jpg')
-cv2.imwrite('Eagle.png',img)
+```python
+bgr_image = cv2.imread('Eagle_in_Flight.jpg')
+cv2.imwrite('output_image.jpg', bgr_image)
 ```
 
 #### 5. Read the saved image above as a color image using cv2.cvtColor().
-```
-img=cv2.imread('Eagle_in_Flight.jpg')
-cv2.imwrite('Eagle.png',img)
+```python
+saved_img = cv2.imread("output_image.jpg")
+rgb_image = cv2.cvtColor(saved_img,cv2.COLOR_BGR2RGB)
 ```
 
 #### 6. Display the Colour image using matplotlib imshow() & Print the image width, height & channel.
-```
-plt.imshow(img)
+```python
+plt.imshow(rgb_image)
+print(rgb_image.shape)
 plt.show()
-img.shape
 ```
 
 #### 7. Crop the image to extract any specific (Eagle alone) object from the image.
-```
-crop = img_rgb[0:450,200:550] 
-plt.imshow(crop[:,:,::-1])
-plt.title("Cropped Region")
-plt.axis("off")
-plt.show()
-crop.shape
+```python
+croped_image = rgb_image[20:430,200:550]
+plt.imshow(croped_image)
 ```
 
 #### 8. Resize the image up by a factor of 2x.
-```
-res= cv2.resize(crop,(200*2, 200*2))
+```python
+resized_image = cv2.resize(rgb_image,None,fx=2,fy=2,interpolation=cv2.INTER_CUBIC)
+plt.imshow(resized_image)
 ```
 
 #### 9. Flip the cropped/resized image horizontally.
-```
-flip= cv2.flip(res,1)
-plt.imshow(flip[:,:,::-1])
-plt.title("Flipped Horizontally")
-plt.axis("off")
+```python
+crop_flipped = cv2.flip(croped_image,1)
+plt.imshow(crop_flipped)
+plt.title("Flipped crop image")
+plt.show()
+resize_flipped = cv2.flip(resized_image,1)
+plt.imshow(resize_flipped)
+plt.title("Flipped resized image")
+plt.show()
 ```
 
 #### 10. Read in the image ('Apollo-11-launch.jpg').
-```
-img=cv2.imread('Apollo-11-launch.jpg',cv2.IMREAD_COLOR)
-img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-img_rgb.shape
+```python
+apollo_img = cv2.imread("Apollo-11-launch.jpg")
+plt.imshow(apollo_img)
+plt.show()
+print(apollo_img.shape)
 ```
 
 #### 11. Add the following text to the dark area at the bottom of the image (centered on the image):
-```
-text = cv2.putText(img_rgb, "Apollo 11 Saturn V Launch, July 16, 1969", (300, 700),cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)  
-plt.imshow(text, cmap='gray')  
-plt.title("New image")
-plt.show()  
-
+```python
+text = 'Apollo 11 Saturn V Launch, July 16, 1969'
+font_face = cv2.FONT_HERSHEY_PLAIN
+# YOUR CODE HERE: use putText()
+text_image = cv2.putText(apollo_img,text,(240,680),cv2.FONT_HERSHEY_COMPLEX,1.2,[250,190,10],3,cv2.LINE_AA)
+plt.imshow(text_image)
 ```
 
 #### 12. Draw a magenta rectangle that encompasses the launch tower and the rocket.
-```
-rcol= (255, 0, 255)
-cv2.rectangle(img_rgb, (400, 100), (800, 650), rcol, 3)  
+```python
+# rect_color = magenta
+rect_image = cv2.rectangle(apollo_img,(500,630),(750,60),(255,0,255),3)
 ```
 
 #### 13. Display the final annotated image.
-```
-plt.title("Annotated image")
-plt.imshow(img_rgb)
+```python
+plt.imshow(rect_image)
 plt.show()
 ```
 
 #### 14. Read the image ('Boy.jpg').
-```
-img =cv2.imread('boy.jpg',cv2.IMREAD_COLOR)
-img_rgb= cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
-```
-
-#### 15. Adjust the brightness of the image.
-```
-m = np.ones(img_rgb.shape, dtype="uint8") * 50
-```
-
-#### 16. Create brighter and darker images.
-```
-img_brighter = cv2.add(img_rgb, m)  
-img_darker = cv2.subtract(img_rgb, m)  
-```
-
-#### 17. Display the images (Original Image, Darker Image, Brighter Image).
-```
-plt.figure(figsize=(10,5))
-plt.subplot(1,3,1), plt.imshow(img_rgb), plt.title("Original Image"), plt.axis("off")
-plt.subplot(1,3,2), plt.imshow(img_brighter), plt.title("Brighter Image"), plt.axis("off")
-plt.subplot(1,3,3), plt.imshow(img_darker), plt.title("Darker Image"), plt.axis("off")
+```python
+boy_img = cv2.imread('boy.jpg')
+plt.imshow(boy_img[:,:,::-1])
 plt.show()
 ```
 
-#### 18. Modify the image contrast.
+#### 15. Adjust the brightness of the image.
+```python
+# Create a matrix of ones (with data type float64)
+matrix_ones = np.ones(boy_img.shape,dtype='uint8') * 50
 ```
-matrix1 = np.ones(img_rgb.shape, dtype="float32") * 1.1
-matrix2 = np.ones(img_rgb.shape, dtype="float32") * 1.2
-img_higher1 = cv2.multiply(img.astype("float32"), matrix1).clip(0,255).astype("uint8")
-img_higher2 = cv2.multiply(img.astype("float32"), matrix2).clip(0,255).astype("uint8")
+
+#### 16. Create brighter and darker images.
+```python
+img_brighter = cv2.add(boy_img, matrix_ones)
+img_darker = cv2.subtract(boy_img, matrix_ones)
+```
+
+#### 17. Display the images (Original Image, Darker Image, Brighter Image).
+```python
+plt.figure(figsize=(14,4))
+plt.subplot(1,3,1); plt.imshow(cv2.cvtColor(boy_img,cv2.COLOR_BGR2RGB)); plt.title("Original Image"); plt.axis('off');
+plt.subplot(1,3,2); plt.imshow(img_brighter[:,:,::-1]); plt.title("Brighter Image");plt.axis('off');
+plt.subplot(1,3,3); plt.imshow(img_darker[:,:,::-1]); plt.title("Darker Image");plt.axis('off');
+plt.show();
+```
+
+#### 18. Modify the image contrast.
+```python
+# Create two higher contrast images using the 'scale' option with factors of 1.1 and 1.2 (without overflow fix)
+img_higher1 = cv2.convertScaleAbs(boy_img, alpha=1.1, beta=0)
+img_higher2 = cv2.convertScaleAbs(boy_img, alpha=1.2, beta=0)
 ```
 
 #### 19. Display the images (Original, Lower Contrast, Higher Contrast).
-```
-plt.figure(figsize=(10,5))
-plt.subplot(1,3,1), plt.imshow(img), plt.title("Original Image"), plt.axis("off")
-plt.subplot(1,3,2), plt.imshow(img_higher1), plt.title("Higher Contrast (1.1x)"), plt.axis("off")
-plt.subplot(1,3,3), plt.imshow(img_higher2), plt.title("Higher Contrast (1.2x)"), plt.axis("off")
+```python
+plt.figure(figsize=(15,5))
+plt.subplot(1,3,1); plt.imshow(cv2.cvtColor(boy_img,cv2.COLOR_BGR2RGB)); plt.title("Original Image");plt.axis('off');
+plt.subplot(1,3,2); plt.imshow(cv2.cvtColor(img_higher1,cv2.COLOR_BGR2RGB)); plt.title("Lower contrast Image"); plt.axis('off');
+plt.subplot(1,3,3); plt.imshow(cv2.cvtColor(img_higher2,cv2.COLOR_BGR2RGB)); plt.title("Higher contrast Image"); plt.axis('off');
 plt.show()
 ```
 
 #### 20. Split the image (boy.jpg) into the B,G,R components & Display the channels.
-```
-b, g, r = cv2.split(img)
-plt.figure(figsize=(10,5))
-plt.subplot(1,3,1), plt.imshow(b, cmap='gray'), plt.title("Blue Channel"), plt.axis("off")
-plt.subplot(1,3,2), plt.imshow(g, cmap='gray'), plt.title("Green Channel"), plt.axis("off")
-plt.subplot(1,3,3), plt.imshow(r, cmap='gray'), plt.title("Red Channel"), plt.axis("off")
+```python
+b,g,r = cv2.split(boy_img)
+plt.figure(figsize=(15,5))
+plt.subplot(1,3,1); plt.imshow(b,cmap='gray'); plt.title("Blue Channel"); plt.axis('off'); 
+plt.subplot(1,3,2); plt.imshow(g,cmap='gray'); plt.title("Green Channel"); plt.axis('off'); 
+plt.subplot(1,3,3); plt.imshow(r,cmap='gray'); plt.title("Red Channel"); plt.axis('off'); 
 plt.show()
 ```
 
 #### 21. Merged the R, G, B , displays along with the original image
-```
-merged_rgb = cv2.merge([r, g, b])
-plt.figure(figsize=(5,5))
-plt.imshow(merged_rgb)
-plt.title("Merged RGB Image")
-plt.axis("off")
+```python
+merged_img = cv2.merge([r,g,b])
+plt.imshow(merged_img)
+plt.title("Merged Image")
 plt.show()
 ```
 
 #### 22. Split the image into the H, S, V components & Display the channels.
-```
-hsv_img = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
-h, s, v = cv2.split(hsv_img)
-plt.figure(figsize=(10,5))
-plt.subplot(1,3,1), plt.imshow(h, cmap='gray'), plt.title("Hue Channel"), plt.axis("off")
-plt.subplot(1,3,2), plt.imshow(s, cmap='gray'), plt.title("Saturation Channel"), plt.axis("off")
-plt.subplot(1,3,3), plt.imshow(v, cmap='gray'), plt.title("Value Channel"), plt.axis("off")
+```python
+boy_hsv = cv2.cvtColor(boy_img, cv2.COLOR_BGR2HSV)
+h,s,v = cv2.split(boy_hsv)
+plt.figure(figsize=(15,5))
+plt.subplot(1,3,1); plt.imshow(h,cmap='gray'); plt.title("Hue"); plt.axis('off'); 
+plt.subplot(1,3,2); plt.imshow(s,cmap='gray'); plt.title("Saturation"); plt.axis('off'); 
+plt.subplot(1,3,3); plt.imshow(v,cmap='gray'); plt.title("Value"); plt.axis('off'); 
 plt.show()
 ```
 #### 23. Merged the H, S, V, displays along with original image.
-```
-merged_hsv = cv2.cvtColor(cv2.merge([h, s, v]), cv2.COLOR_HSV2RGB)
-combined = np.concatenate((img_rgb, merged_hsv), axis=1)
-plt.figure(figsize=(10, 5))
-plt.imshow(combined)
-plt.title("Original Image  &  Merged HSV Image")
-plt.axis("off")
+```python
+merged_hsv = cv2.merge([h,s,v])
+plt.figure(figsize=(15,5))
+plt.subplot(1,2,1)
+plt.imshow(boy_img[:,:,::-1])
+plt.axis('off')
+plt.title("Original Image")
+plt.subplot(1,2,2)
+plt.imshow(merged_hsv)
+plt.title("Merged HSV Image")
+plt.axis('off')
 plt.show()
 ```
 
 ## Output:
-**i)** Read and Display an Image.
-1.Read 'Eagle_in_Flight.jpg' as grayscale and display:
 
+- **Read and Display an Image**
 
-![Screenshot 2025-03-09 154231](https://github.com/user-attachments/assets/31689cac-7a79-459c-9940-0adc26441782)
+  <img width="529" height="418" alt="image" src="https://github.com/user-attachments/assets/86c98a66-8569-4d00-9e45-698a2e05831e" />
 
 
+- **Adjust Image Brightness**
 
+  <img width="1105" height="281" alt="image" src="https://github.com/user-attachments/assets/7c89d6c4-3ac3-43cb-a931-cb04c080d897" />
 
 
+- **Modify Image Contrast**
 
- 2.Save image as PNG and display:
+  <img width="1182" height="298" alt="image" src="https://github.com/user-attachments/assets/620e14ef-9e80-4ff6-bb39-c04aa097b28b" />
 
 
+- **Generate Third Image Using Bitwise Operations**
 
-
- 
-  ![image](https://github.com/user-attachments/assets/f17ba18b-7549-45e8-80a4-8568b81b718b)
-
-
-
-
-
-
-  
-  3.Cropped image
-
-
-
-
-
-  
-  ![image](https://github.com/user-attachments/assets/ebd99581-276e-47f9-af37-c99423e803bc)
-
-
-
-
-
-  
-  4.Resize and flip Horizontally:
-
-
-
-
-  
-  ![image](https://github.com/user-attachments/assets/92cb7462-a2fd-4ba3-bf89-02785b629e1d)
-
-
-
-
-
-  
-  5.Read 'Apollo-11-launch.jpg' and Display the final annotated image:
-
-
-
-
-![Screenshot 2025-03-11 082700](https://github.com/user-attachments/assets/564d076b-ed47-4903-8afe-52dc989b0800)
-
-
-
-
-  
-*ii)** Adjust Image Brightness.
-
-
-
-1.Create brighter and darker images and display:
-
-
-
-
-![image](https://github.com/user-attachments/assets/f34966ee-21f9-4441-bdd4-36c3da71b89d)
-
-
-
-  **iii)** Modify Image Contrast.
-
-
-1.Modify contrast using scaling factors 1.1 and 1.2
-
- 
-![image](https://github.com/user-attachments/assets/998698a5-0d84-4f73-96d6-68421a529951)
- 
-
- **iv)** Generate Third Image Using Bitwise Operations.
-
-
- 
- 1.Split 'Boy.jpg' into B, G, R components and display: 
-
-
-
-![image](https://github.com/user-attachments/assets/54d59ef6-9800-4ff4-af13-f15fd602d334)
-
-
-
-
-2.Merge the R, G, B channels and display:
-
-
-
-![Screenshot 2025-03-11 082425](https://github.com/user-attachments/assets/6db4d2a2-8b21-43e5-976a-8f199eebc8cc)
-
-
-
-
-
-
-3.Split the image into H, S, V components and display:
-
-
-
-
-![Screenshot 2025-03-11 082414](https://github.com/user-attachments/assets/e5a79c38-d998-4ced-82d2-d750d465572d)
-
-
-
-
-
-4.Merge the H, S, V channels and display:
-
-
-
-![Screenshot 2025-03-11 082402](https://github.com/user-attachments/assets/2e2034ed-8cc3-4855-a8cb-87632e161c80)
+  <img width="548" height="435" alt="image" src="https://github.com/user-attachments/assets/276799bd-25c3-4b24-b283-0615a139afc7" />
 
 
 
 ## Result:
 Thus, the images were read, displayed, brightness and contrast adjustments were made, and bitwise operations were performed successfully using the Python program.
+
